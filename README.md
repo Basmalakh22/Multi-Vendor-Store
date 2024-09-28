@@ -22,3 +22,5 @@
 1. Order Management: Vendors can view and fulfill customer orders.
 1. Customer Management: Customers can create accounts, browse products, and place orders.
 1. Admin Panel: Admins can oversee the platform, manage vendors, and ensure the smooth operation of the marketplace.
+
+---
