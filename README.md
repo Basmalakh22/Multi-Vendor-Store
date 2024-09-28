@@ -4,7 +4,7 @@
 
 ---
 
-## The project uses the following technologies:
+## The project uses the following technologies
 
 1. Laravel 10.x (PHP Framework)
 1. MySQL (Database)
