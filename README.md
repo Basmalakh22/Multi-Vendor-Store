@@ -24,3 +24,4 @@
 1. Admin Panel: Admins can oversee the platform, manage vendors, and ensure the smooth operation of the marketplace.
 
 ---
+---
