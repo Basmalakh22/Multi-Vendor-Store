@@ -7,15 +7,13 @@
     <li class="breadcrumb-item active">Categories</li>
 @endsection
 @section('content')
-<div class="bm-5">
-    <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary">Create</a>
-</div>
-@if(session()->has('success'))
-<div class="alert alert-success">
-    {{session('success')}}
-</div>
-    
-@endif
+    <div class="bm-5">
+        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary">Create</a>
+    </div>
+
+    <x-alert />
+
+
 
     <table class="table">
         <thead>
@@ -32,16 +30,17 @@
 
             @forelse ($categories as $category)
                 <tr>
-                    <td><img src="{{ asset('storage/'.$category->imge) }}" alt="" height="50"></td>
+                    <td><img src="{{ asset('storage/' . $category->imge) }}" alt="" height="50"></td>
                     <td>{{ $category->id }}</td>
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->parent_id }}</td>
                     <td>{{ $category->created_at }}</td>
                     <td>
-                        <a href="{{ route('dashboard.categories.edit',$category->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+                        <a href="{{ route('dashboard.categories.edit', $category->id) }}"
+                            class="btn btn-sm btn-outline-success">Edit</a>
                     </td>
                     <td>
-                        <form action="{{ route('dashboard.categories.destroy',$category->id) }}" method = 'POST'>
+                        <form action="{{ route('dashboard.categories.destroy', $category->id) }}" method = 'POST'>
                             @csrf
                             <!-- Form   method spoofing -->
                             <!-- <input type="hidden" name="_method" value="delete"> -->

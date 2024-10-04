@@ -10,18 +10,7 @@
 @endif
 
 <div class="form-group">
-    <label>Category Name</label>
-    <input type="text" name="name" @class([
-        'form-control',
-        'is-invalid' => $errors->has('name'),
-    ])
-    value="{{ old('name' ,$category->name) }}">
-    @error('name')
-    <div class="invalid-feedback">
-        {{ $message }}
-    </div>
-
-    @enderror
+    <x-form.input label="Category Name" class="form-control-lg" role="input" name="name" :value="$category->name" />
 </div>
 <div class="form-group">
     <label>Category Parent</label>
@@ -34,31 +23,19 @@
 </div>
 <div class="form-group">
     <label>Description</label>
-    <textarea name="description" class="form-control">{{ old('description' ,$category->description) }}</textarea>
+    <x-form.textarea name="description" :value="$category->description" />
 </div>
 <div class="form-group">
-    <label>Image</label>
-    <input type='file' name="imge" class="form-control">
+    <x-form.label id="image">Image</x-form.label>
+    <x-form.input type="file" name="imge" accept="image/*" />
     @if ($category->imge)
         <img src="{{ asset('storage/' . $category->imge) }}" alt="" height="50">
     @endif
 </div>
 <div class="form-group">
-    <label>Status</label>
+    <label for="">Status</label>
     <div>
-
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="status" value="active" @checked( old('status'  ,$category->status) == 'active')>
-            <label class="form-check-label">
-                Active
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="status" value="inactive" @checked( old('status' ,$category->status) == 'inactive')>
-            <label class="form-check-label">
-                Archived
-            </label>
-        </div>
+        <x-form.radio name="status" :checked="$category->status" :options="['active' => 'Active', 'archived' => 'Archived']" />
     </div>
 </div>
 <div class="form-group">
