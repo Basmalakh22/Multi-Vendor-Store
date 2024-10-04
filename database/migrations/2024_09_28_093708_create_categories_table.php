@@ -23,8 +23,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('description')->nullable();
             $table->string('imge')->nullable();
-            $table->enum('status',['active','inactive'])->nullable();
-            
+            $table->enum('status',['active','inactive'])->nullable();  
             $table->timestamps();
         });
     }
