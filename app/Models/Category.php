@@ -55,7 +55,7 @@ class Category extends Model
                 //new Filter('larevel'),
             ],
             'parent_id' => "nullable|int|exists:categories,id",
-            'image' => "image|max:1048576|dimensions:min_width = 100 ,min_width = 100",
+            'imge' => "image|max:1048576|dimensions:min_width = 100 ,min_width = 100",
             'status' => "required|in:active,inactive"
         ];
     }
