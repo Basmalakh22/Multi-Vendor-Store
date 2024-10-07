@@ -15,7 +15,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate();
+        // SELECT * FROM Products
+        // SELECT * FROM categories WHERE id IN (all categories_id Selected from first statment)
+       // SELECT * FROM stores WHERE id IN (all categories_id Selected from first statment)
+        $products = Product::with(['category','store'])->paginate();
+        
         return view('dashboard.products.index',compact('products'));
     }
 

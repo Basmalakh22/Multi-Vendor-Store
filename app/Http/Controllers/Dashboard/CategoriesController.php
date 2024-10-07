@@ -21,17 +21,44 @@ class CategoriesController extends Controller
     public function index()
     {
         $request = request();
+
+        // "" BY USING LEFT JOIN "" //
+
         // SELECT a.* , b.* as parent_name
         // FROM categories as a
         // LEFT JOIN categories as b ON b.id = aparent_id
 
-        $categories = Category::leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
-        ->select([
-            'categories.*',
-            'parents.name as parent_name',
+        // $categories = Category::leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
+        // ->select([
+        //     'categories.*',
+        //     'parents.name as parent_name',
+        // ])
+        // ->filter($request->query()) // Apply the filter scope
+        // ->paginate(); // Paginate the result
+
+        // ----------------------------------------------------------------//
+
+        // "" AFTER USING RELATIONS "" //
+        // $categories = Category::with('parent')
+        // ->select('categories.*')
+        // ->selectRaw('(SELECT COUNT(*) FROM products WHERE status = 'active' AND category_id = categories.id) as products_count')
+        // ->filter($request->query()) // Apply the filter scope
+        // ->paginate(); // Paginate the result
+
+
+        // ----------------------------------------------------------------//
+
+
+        // "" BY USING RELATIONS "" //
+        $categories = Category::with('parent')
+        ->withCount([
+            'products' => function($query){
+                $query->where('status', '=' , 'active');
+            }
         ])
         ->filter($request->query()) // Apply the filter scope
         ->paginate(); // Paginate the result
+
 
         return view('dashboard.categories.index', compact('categories'));
     }
@@ -82,9 +109,12 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        return view('dashboard.categories.show', [
+
+            'category' => $category
+        ]);
     }
 
     /**
