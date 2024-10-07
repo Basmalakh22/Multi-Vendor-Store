@@ -76,9 +76,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 1. Laravel 10.x (PHP Framework)
 1. MySQL (Database)
 1. Bootstrap 5.x (Frontend CSS Framework)
-1. JavaScript/Node.js (Optional for frontend interactivity)
+1. JavaScript
 1. Composer (PHP Dependency Manager)
-1. Nginx/Apache (Web Server)
 
 ---
 
