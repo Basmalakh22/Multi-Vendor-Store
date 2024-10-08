@@ -70,6 +70,7 @@ return [
     */
 
     'timezone' => 'UTC',
+    'currency' => 'SAR',
 
     /*
     |--------------------------------------------------------------------------
@@ -210,6 +211,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'currency' => App\Helpers\currency::class
     ])->toArray(),
 
 ];
