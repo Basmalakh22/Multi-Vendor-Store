@@ -1,26 +1,26 @@
 <x-front-layout title="Cart">
 
     <x-slot:breadcrumb>
-    <!-- Start Breadcrumbs -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6 col-12">
-                    <div class="breadcrumbs-content">
-                        <h1 class="page-title">Cart</h1>
+        <!-- Start Breadcrumbs -->
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="breadcrumbs-content">
+                            <h1 class="page-title">Cart</h1>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <ul class="breadcrumb-nav">
-                        <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="{{ route('products.index') }}">Shop</a></li>
-                        <li>Cart</li>
-                    </ul>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <ul class="breadcrumb-nav">
+                            <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> Home</a></li>
+                            <li><a href="{{ route('products.index') }}">Shop</a></li>
+                            <li>Cart</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End Breadcrumbs -->
+        <!-- End Breadcrumbs -->
     </x-slot:breadcrumb>
 
     <!-- Shopping Cart -->
@@ -53,38 +53,37 @@
                 <!-- End Cart List Title -->
                 <!-- Cart Single List list -->
                 @foreach ($cart->get() as $item)
-
-                <div class="cart-single-list">
-                    <div class="row align-items-center">
-                        <div class="col-lg-1 col-md-1 col-12">
-                            <a href="{{ route('products.index',$item->product->slug) }}"><img src="{{ $item->product->image_url }}"
-                                    alt="#"></a>
-                        </div>
-                        <div class="col-lg-4 col-md-3 col-12">
-                            <h5 class="product-name"><a href="{{ route('products.show',$item->product->slug) }}">
-                                    {{ $item->product->name }}</a></h5>
-                            <p class="product-des">
-                                <span><em>Type:</em> Mirrorless</span>
-                                <span><em>Color:</em> Black</span>
-                            </p>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-12">
-                            <div class="count-input">
-                                <input class="form-control" value="{{ $item->quantity }}" />
+                    <div class="cart-single-list" id="{{ $item->id }}">
+                        <div class="row align-items-center">
+                            <div class="col-lg-1 col-md-1 col-12">
+                                <a href="{{ route('products.index', $item->product->slug) }}"><img
+                                        src="{{ $item->product->image_url }}" alt="#"></a>
+                            </div>
+                            <div class="col-lg-4 col-md-3 col-12">
+                                <h5 class="product-name"><a href="{{ route('products.show', $item->product->slug) }}">
+                                        {{ $item->product->name }}</a></h5>
+                                <p class="product-des">
+                                    <span><em>Type:</em> Mirrorless</span>
+                                    <span><em>Color:</em> Black</span>
+                                </p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-12">
+                                <div class="count-input">
+                                    <input class="form-control item-quantity" data-id="{{ $item->id }}"
+                                        value="{{ $item->quantity }}" />
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-12">
+                                <p>{{ currency::format($item->quantity * $item->product->price, 'SAR') }}</p>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-12">
+                                <p>{{ currency::format(0, 'SAR') }}</p>
+                            </div>
+                            <div class="col-lg-1 col-md-2 col-12">
+                                <a class="remove-item" data-id="{{ $item->id }}" href="javascript:void(0)"><i class="lni lni-close"></i></a>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-12">
-                            <p>{{ currency::format($item->quantity * $item->product->price ,'SAR') }}</p>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-12">
-                            <p>{{ currency::format(0,'SAR') }}</p>
-                        </div>
-                        <div class="col-lg-1 col-md-2 col-12">
-                            <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                        </div>
                     </div>
-                </div>
-
                 @endforeach
                 <!-- End Single List list -->
 
@@ -109,7 +108,7 @@
                             <div class="col-lg-4 col-md-6 col-12">
                                 <div class="right">
                                     <ul>
-                                        <li>Cart Subtotal<span>{{ currency::format($cart->total(),'SAR') }}</span></li>
+                                        <li>Cart Subtotal<span>{{ currency::format($cart->total(), 'SAR') }}</span></li>
                                         <li>Shipping<span>Free</span></li>
                                         <li>You Save<span>$29.00</span></li>
                                         <li class="last">You Pay<span>$2531.00</span></li>
@@ -128,5 +127,13 @@
         </div>
     </div>
     <!--/ End Shopping Cart -->
+    @push('scripts')
+        <script>
+            const csrf_token = "{{ csrf_token() }}";
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    @endpush
+    @vite('resources/js/cart.js')
+
 
 </x-front-layout>
