@@ -1,7 +1,7 @@
 <div class="cart-items">
     <a href="javascript:void(0)" class="main-btn">
         <i class="lni lni-cart"></i>
-        <span class="total-items">2</span>
+        <span class="total-items">{{ $items->count() }}</span>
     </a>
     <!-- Shopping Item -->
     <div class="shopping-item">
@@ -21,7 +21,7 @@
                 <div class="content">
                     <h4><a href="product-details.html">{{ $item->product->name }}</a></h4>
                     <p class="quantity">{{ $item->quantity }}x - <span
-                            class="amount">{{ Currency::format($item->product->price ,'SAR') }}</span></p>
+                            class="amount">{{ currency::format($item->product->price ,'SAR') }}</span></p>
                 </div>
             </li>
             @endforeach
@@ -33,7 +33,7 @@
                 <span class="total-amount">{{ currency::format($total ,'SAR') }}</span>
             </div>
             <div class="button">
-                <a href="checkout.html" class="btn animate">Checkout</a>
+                <a href="{{ route('checkout') }}" class="btn animate">Checkout</a>
             </div>
         </div>
     </div>
