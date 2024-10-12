@@ -32,19 +32,20 @@ class OrderCreatedNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail','database'];
 
-        // $channels = ['database'];
-        // if($notifiable->notification_preferences['order_created']['sms']??false){
-        //     $channels[] ='vonage';
-        // }
-        // if($notifiable->notification_preferences['order_created']['mail']??false){
-        //     $channels[] ='mail';
-        // }
-        // if($notifiable->notification_preferences['order_created']['broadcast']??false){
-        //     $channels[] ='broadcast';
-        // }
-        // return $channels;
+        $channels = ['database'];
+
+        if($notifiable->notification_preferences['order_created']['sms']??false){
+            $channels[] ='vonage';
+        }
+        if($notifiable->notification_preferences['order_created']['mail']??false){
+            $channels[] ='mail';
+        }
+        if($notifiable->notification_preferences['order_created']['broadcast']??false){
+            $channels[] ='broadcast';
+        }
+        return $channels;
 
     }
 
@@ -64,6 +65,16 @@ class OrderCreatedNotification extends Notification
                     ->line("A new order (#{$this->order->number}) created by {$addr->name} from {$addr->country_name}.")
                     ->action('View order', url('/dashboard'))
                     ->line('Thank you for using our application!');
+    }
+    public function toDatabase($notifiable){
+        $addr = $this->order->billingAddress;
+
+        return [
+            'bodt' => "A new order (#{$this->order->number}) created by {$addr->name} from {$addr->country_name}.",
+            'icon' => 'fas fa-file',
+            'url' => url('/dashboard'),
+            'order_id' =>$this->order->id
+        ];
     }
 
     /**
