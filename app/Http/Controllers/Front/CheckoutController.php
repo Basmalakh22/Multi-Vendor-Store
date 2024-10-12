@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -26,7 +27,13 @@ class CheckoutController extends Controller
     }
     public function store(Request $request, CartRepository $cart)
     {
-        $request->validate([]);
+        $request->validate([
+            'addr.billing.first_name' =>['required','string','max:255 '],
+            'addr.billing.last_name' =>['required','string','max:255 '],
+            'addr.billing.email' =>['required','string','max:255 '],
+            'addr.billing.phone_number' =>['required','string','max:255 '],
+            'addr.billing.city' =>['required','string','max:255 '],
+        ]);
         $items = $cart->get()->groupBy('product.store_id')->all();
 
         DB::beginTransaction();
@@ -38,7 +45,7 @@ class CheckoutController extends Controller
                     'user_id' => Auth::id(),
                     'payment_method' => 'cod'
                 ]);
-                // order items 
+                // order items
                 foreach ($cart_items as $item) {
                     OrderItem::create([
                         'order_id' => $order->id,
@@ -55,9 +62,12 @@ class CheckoutController extends Controller
                 }
             }
             DB::commit();
+            // event('order.created', $order ,Auth::user());
+            event(new OrderCreated($order));
         } catch (Throwable $e) {
             DB::rollBack();
+            throw $e;
         }
-        return redirect()->route('home');
+       // return redirect()->route('home');
     }
 }
