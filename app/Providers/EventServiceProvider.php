@@ -32,7 +32,7 @@ class EventServiceProvider extends ServiceProvider
             DeductProductQuantity::class,
             SendOrderCreatedNotifications::class,
             //sendOrderCreatedNotification::class,
-           // EmptyCart::class
+            EmptyCart::class
         ],
     ];
 

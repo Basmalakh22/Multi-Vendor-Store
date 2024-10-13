@@ -196,6 +196,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\CartServiceProvider::class,
+        App\Providers\FortifyServiceProvider::class,
+
 
     ],
 

@@ -16,7 +16,7 @@
                 <a href="javascript:void(0)" class="remove" title="Remove this item"><i class="lni lni-close"></i></a>
                 <div class="cart-img-head">
                     <a class="cart-img" href="{{ route('products.show', $item->product->slug) }}">
-                        <img src="{{ $item->product->image_url }}" alt="#"></a>
+                         <img src="{{ $item->product->image_url }}" alt="#"></a>
                 </div>
                 <div class="content">
                     <h4><a href="product-details.html">{{ $item->product->name }}</a></h4>

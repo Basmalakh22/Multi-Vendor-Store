@@ -1,4 +1,4 @@
-<x-front-layout>
+<x-front-layout title="Home">
 
     <!-- Start Hero Area -->
     <section class="hero-area">
@@ -214,13 +214,11 @@
             </div>
             <div class="row">
                 @foreach ($products as $product)
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <x-product-card :product="$product" />
 
-                <div class="col-lg-3 col-md-6 col-12">
-                   <x-product-card :product="$product" />
 
-
-                </div>
-
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -756,6 +754,7 @@
     <!-- End Shipping Info -->
 
 
+
     @push('scripts')
     <script type="text/javascript">
         //========= Hero Slider
@@ -798,7 +797,7 @@
         });
 
     </script>
-    <script>
+    {{-- <script>
         const finaleDate = new Date("February 15, 2023 00:00:00").getTime();
 
         const timer = () => {
@@ -828,7 +827,8 @@
         }
         timer();
         setInterval(timer, 1000);
-    </script>
+    </script> --}}
     @endpush
+
 
 </x-front-layout>
