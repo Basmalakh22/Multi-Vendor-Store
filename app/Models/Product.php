@@ -39,6 +39,9 @@ class Product extends Model
     {
 
         static::addGlobalScope('store', new StoreScope());
+        static::creating(function(Product $product){
+            $product->slug = Str::slug($product->name);
+        });
     }
     public function category()
     {
@@ -72,5 +75,40 @@ class Product extends Model
             return 0;
         }
         return number_format(100 - (100*  $this->price / $this->compare_price), 1);
+    }
+    public function scopeFilter(Builder $builder,$filter){
+        $options = array_merge([
+            'store_id' => null,
+            'category_id' => null,
+            'tag_id' => null,
+            'status' => 'active',
+        ],$filter);
+
+        $builder->when($options['status'],function($builder,$status){
+            $builder->where('status',$status);
+        });
+        $builder->when($options['store_id'],function($builder,$value){
+            $builder->where('store_id',$value);
+        });
+        $builder->when($options['category_id'],function($builder,$value){
+            $builder->where('category_id',$value);
+        });
+        $builder->when($options['tag_id'],function($builder,$value){
+
+            $builder->whereExists(function ($quary) use ($value){
+                $quary->select(1)
+                ->from('product_tag')
+                ->whereRaw('product_id = product.id')
+                ->where('tag_id', $value);
+            });
+
+
+            // $builder->whereRaw('id In (SELECT product_id FROM product_tag WHERE tag_id = ?)',[$value]);
+
+            // $builder->whereHas('tags',function($builder) use ($value){
+            //     $builder->where('id',$value);
+            // });
+        });
+
     }
 }
