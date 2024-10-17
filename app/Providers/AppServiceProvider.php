@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        JsonResource::withoutWrappering();
+       // JsonResource::withoutWrappering();
         Validator::extend('filter', function ($attribute, $value ,$params) {
             return !in_array( strtolower($value) , $params);
 

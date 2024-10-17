@@ -7,9 +7,13 @@ use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth:sanctum')->except('index','show');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -41,6 +45,11 @@ class ProductsController extends Controller
 
         ]);
         $product =  Product::create($request->all());
+
+        $user = $request->user();
+        if(! $user->tokenCan('products.create')){
+            abort(403,'Not allowed ');
+        }
 
         return  Response::json($product,201,[
             'Location' =>route('products.show', $product->id)
@@ -82,6 +91,11 @@ class ProductsController extends Controller
         ]);
         $product->update($request->all());
 
+        $user = $request->user();
+        if(! $user->tokenCan('products.update')){
+            abort(403,'Not allowed ');
+        }
+
         return Response::json($product);
     }
 
@@ -93,6 +107,12 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
+        $user = Auth::guard('sanctum')->user();
+        if(! $user->tokenCan('products.delete')){
+            return response([
+                'message' => 'Not allowed '
+            ],403);
+        }
         Product::destroy($id);
         return [
             'message' => 'Product deleted successfully'
