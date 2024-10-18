@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\CurrencyConverter;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceResponse;
 use Illuminate\Pagination\Paginator;
@@ -17,8 +18,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('currency.converter', function () {
+            return new CurrencyConverter(config('services.currency_converter.api_key'));
+        });
     }
+
 
     /**
      * Bootstrap any application services.
@@ -27,11 +31,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       // JsonResource::withoutWrappering();
-        Validator::extend('filter', function ($attribute, $value ,$params) {
-            return !in_array( strtolower($value) , $params);
-
-        },'this value  is prohibited!');
+        // JsonResource::withoutWrappering();
+        Validator::extend('filter', function ($attribute, $value, $params) {
+            return !in_array(strtolower($value), $params);
+        }, 'this value  is prohibited!');
 
         Paginator::useBootstrapFour();
     }

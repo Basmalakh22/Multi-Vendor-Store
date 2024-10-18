@@ -8,6 +8,7 @@ use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Front\CurrencyConverterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,9 @@ Route::post('/checkout', [CheckoutController::class, 'store']);
 
 Route::get('auth/user/2fa', [TwoFactorAuthenticationController::class, 'index'])
     ->name('front.2fa');
+    
+Route::post('currency', [CurrencyConverterController::class, 'store'])
+    ->name('currency.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
