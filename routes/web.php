@@ -9,6 +9,7 @@ use App\Http\Controllers\Front\ProductsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\CurrencyConverterController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,26 +22,30 @@ use App\Http\Controllers\Front\CurrencyConverterController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])
-    ->name('home');
+Route::group([
+    'prefix' => LaravelLocalization::setLocale()
+], function () {
+    Route::get('/', [HomeController::class, 'index'])
+        ->name('home');
 
-Route::get('/products', [ProductsController::class, 'index'])
-    ->name('products.index');
+    Route::get('/products', [ProductsController::class, 'index'])
+        ->name('products.index');
 
-Route::get('/products/{product:slug}', [ProductsController::class, 'show'])
-    ->name('products.show');
+    Route::get('/products/{product:slug}', [ProductsController::class, 'show'])
+        ->name('products.show');
 
-Route::resource('cart', CartController::class);
+    Route::resource('cart', CartController::class);
 
-Route::get('/checkout', [CheckoutController::class, 'create'])
-    ->name('checkout');
-Route::post('/checkout', [CheckoutController::class, 'store']);
+    Route::get('/checkout', [CheckoutController::class, 'create'])
+        ->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store']);
 
-Route::get('auth/user/2fa', [TwoFactorAuthenticationController::class, 'index'])
-    ->name('front.2fa');
-    
-Route::post('currency', [CurrencyConverterController::class, 'store'])
-    ->name('currency.store');
+    Route::get('auth/user/2fa', [TwoFactorAuthenticationController::class, 'index'])
+        ->name('front.2fa');
+
+    Route::post('currency', [CurrencyConverterController::class, 'store'])
+        ->name('currency.store');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

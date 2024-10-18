@@ -15,9 +15,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/tiny-slider.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/glightbox.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
-
     @stack('styles')
-
 </head>
 
 <body>
@@ -56,25 +54,24 @@
                                             <select name="currency_code" onchange="this.form.submit()">
                                                 <option value="USD" @selected('USD' == session('currency_code'))>$ USD</option>
                                                 <option value="EUR" @selected('EUR' == session('currency_code'))>€ EURO</option>
-                                                <option value="QAR" @selected('QAR' == session('currency_code'))>﷼ QAR</option>
                                                 <option value="JOD" @selected('JOD' == session('currency_code'))>د.ا JOD</option>
                                                 <option value="SAR" @selected('SAR' == session('currency_code'))>﷼ SAR</option>
                                                 <option value="EGY" @selected('EGY' == session('currency_code'))>E£ EGY</option>
+                                                <option value="QAR" @selected('QAR' == session('currency_code'))>﷼ QAR</option>
                                             </select>
                                         </form>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="select-position">
-                                        <select id="select5">
-                                            <option value="0" selected>English</option>
-                                            <option value="1">Español</option>
-                                            <option value="2">Filipino</option>
-                                            <option value="3">Français</option>
-                                            <option value="4">العربية</option>
-                                            <option value="5">हिन्दी</option>
-                                            <option value="6">বাংলা</option>
-                                        </select>
+                                        <form action="{{ URL::current() }}" method="get">
+                                            <select name="locale" onchange="this.form.submit()">
+                                                @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                                    <option value="{{ $localeCode }}" @selected($localeCode == App::currentLocale())>
+                                                        {{ $properties['native'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </form>
                                     </div>
                                 </li>
                             </ul>
@@ -83,18 +80,18 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-middle">
                             <ul class="useful-links">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="index.html">{{ trans('Home') }}</a></li>
+                                <li><a href="about-us.html">@lang('About Us')</a></li>
+                                <li><a href="contact.html">{{ __('Contact Us') }}</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-end">
-                            @auth('web')
+                            @auth
                                 <div class="user">
                                     <i class="lni lni-user"></i>
-                                    {{ Auth::guard('web')->user()->name }}
+                                    {{ Auth::user()->name }}
                                 </div>
                                 <ul class="user-login">
                                     <li>
@@ -110,19 +107,18 @@
                             @else
                                 <div class="user">
                                     <i class="lni lni-user"></i>
-                                    Hello
+                                    {{ __('Hello') }}
                                 </div>
                                 <ul class="user-login">
                                     <li>
-                                        <a href="{{ route('login') }}">Sign In</a>
+                                        <a href="{{ route('login') }}">{{ Lang::get('Sign In') }}</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('register') }}">Register</a>
+                                        <a href="{{ route('register') }}">{{ __('Register') }}</a>
                                     </li>
                                 </ul>
                             @endauth
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -322,9 +318,7 @@
     {{ $breadcrumb ?? '' }}
     <!-- End Breadcrumbs -->
 
-    <main>
-        {{ $slot }}
-    </main>
+    {{ $slot }}
 
     <!-- Start Footer Area -->
     <footer class="footer">
@@ -486,6 +480,7 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     @stack('scripts')
+
 </body>
 
 </html>
