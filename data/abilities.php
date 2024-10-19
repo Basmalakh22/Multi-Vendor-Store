@@ -13,6 +13,8 @@ return [
         'products.create' => 'Create Products',
         'products.update' => 'Update Products',
         'products.delete' => 'Delete Products',
+        'products.restore' => 'Restore Products',
+        'products.force-delete' => 'Force Delete Products', 
     
 
     
@@ -33,6 +35,8 @@ return [
         'roles.create' => 'Create Roles',
         'roles.update' => 'Update Roles',
         'roles.delete' => 'Delete Roles',
+        'roles.restore' => 'Restore Roles',
+        'roles.force-delete' => 'Force Delete Roles',
    
 
 ];
