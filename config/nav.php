@@ -1,3 +1,4 @@
+
 <?php
 
 return [
@@ -5,27 +6,37 @@ return [
         'icon' => 'nav-icon fas fa-tachometer-alt',
         'route' => 'dashboard.dashboard',
         'title' => 'Dashboard',
-        'active' => 'dashboard.dashboard'
+        'active' => 'dashboard.dashboard',
     ],
     [
-        'icon' => 'far fa-circle nav-icon',
+        'icon' => 'fas fa-tags nav-icon',
         'route' => 'dashboard.categories.index',
         'title' => 'Categories',
         'badge' => 'New',
-        'active' => 'dasboard.categories.*'
-
+        'active' => 'dashboard.categories.*',
+        'ability' => 'categories.view',
     ],
     [
-        'icon' => 'nav-icon fas fa-tachometer-alt',
+        'icon' => 'fas fa-box nav-icon',
         'route' => 'dashboard.products.index',
         'title' => 'Products',
-        'active' => 'dashboard.products.*'
+        'active' => 'dashboard.products.*',
+        'ability' => 'products.view',
     ],
     [
-        'icon' => 'nav-icon fas fa-tachometer-alt',
-        'route' => 'dashboard.dashboard',
+        'icon' => 'fas fa-receipt nav-icon',
+        'route' => 'dashboard.categories.index',
         'title' => 'Orders',
-        'active' => 'dashboard.orders.*'
+        'active' => 'dashboard.orders.*',
+        'ability' => 'orders.view',
     ],
-
+    [
+        'icon' => 'fas fa-shield nav-icon',
+        'route' => 'dashboard.roles.index',
+        'title' => 'Roles',
+        'active' => 'dashboard.roles.*',
+        'ability' => 'roles.view',
+    ],
+    
+    
 ];

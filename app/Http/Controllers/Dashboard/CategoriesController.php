@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,6 +21,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+        if (!Gate::allows('categories.view')) {
+            abort(403);
+        }
         $request = request();
 
         // "" BY USING LEFT JOIN "" //
@@ -70,6 +74,10 @@ class CategoriesController extends Controller
      */
     public function create()
     {
+        if (Gate::denies('categories.create')) {
+            abort(403);
+        }
+
         $parents = Category::all();
         $category = new Category();
         return view('dashboard.categories.create', compact('parents', 'category'));
@@ -83,6 +91,8 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('categories.create');
+
         $clean_data = $request->validate(Category::rules(), [
             'required' => 'this field is (:attribute) required',
             'unique' => 'this name is already exists',
@@ -111,6 +121,10 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
+        if (Gate::denies('categories.view')) {
+            abort(403);
+        }
+
         return view('dashboard.categories.show', [
 
             'category' => $category
@@ -125,6 +139,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
+        Gate::authorize('categories.update');
+
         $category = Category::findOrFail($id);
         // if(!$category){
         //     abort(404);
@@ -182,6 +198,8 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
+        Gate::authorize('categories.delete');
+
         $category = Category::findOrFail($id);
         // $category->delete();
 
