@@ -124,4 +124,5 @@ class ProductsController extends Controller
         $this->authorize('delete ', $product);
 
     }
+    
 }
