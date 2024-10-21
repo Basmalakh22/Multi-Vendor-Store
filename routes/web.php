@@ -10,6 +10,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\CurrencyConverterController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\SocialController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +49,14 @@ Route::group([
     Route::post('currency', [CurrencyConverterController::class, 'store'])
         ->name('currency.store');
 });
+
+Route::get('auth/{povider}/redirect', [SocialLoginController::class, 'redirect'])
+    ->name('auth.socilaite.redirect');
+
+Route::get('auth/{povider}/callback', [SocialLoginController::class, 'callback'])
+    ->name('auth.socilaite.callback');
+
+Route::get('auth/{povider}/user', [SocialController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
