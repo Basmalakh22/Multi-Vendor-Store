@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\CurrencyConverterController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\Front\PaymentsController;
 use App\Http\Controllers\SocialController;
 
 
@@ -57,6 +58,13 @@ Route::get('auth/{povider}/callback', [SocialLoginController::class, 'callback']
     ->name('auth.socilaite.callback');
 
 Route::get('auth/{povider}/user', [SocialController::class, 'index']);
+
+Route::get('orders/{order}/pay', [PaymentsController::class, 'create'])
+    ->name('orders.payments.create');
+Route::post('orders/{order}/stripe/payment-intent', [PaymentsController::class, 'createStripePaymentIntent'])
+    ->name('stripe.paymentIntent.create');
+Route::get('orders/{order}/stripe/callback', [PaymentsController::class, 'confirm'])
+    ->name('stripe.return');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

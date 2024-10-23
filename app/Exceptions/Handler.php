@@ -48,7 +48,9 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
-        $this->renderable(function (QueryException $e,Request $request) {
+        $this->renderable(
+            function (QueryException $e,Request $request)
+            {
             if($e->getCode() == 23000){
                 $message = 'Foreign key constraint failed';
             }else{

@@ -39,6 +39,10 @@ class Order extends Model
                 'options'
             ]);
     }
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class,'order_id');
+    }
     public function address(){
         return $this->hasMany(OrderAddress::class);
     }
